@@ -45,10 +45,12 @@ QStringList TranslationLoader::genSearchDirs(const TranslationLoader::Module &mo
 void TranslationLoader::loadAll(const QLocale &locale)
 {
     for (const auto &module : std::as_const(m_modules)) {
+        bool module_loaded = false;
         for (const QString &dir : genSearchDirs(module)) {
             auto *translator = new QTranslator(this);
 
             if (translator->load(locale, module.moduleName, "_", dir)) {
+                module_loaded = true;
                 qCDebug(lcTranslationLoader) << "Loaded translation:" << translator->filePath();
 
                 QCoreApplication::installTranslator(translator);
@@ -58,6 +60,8 @@ void TranslationLoader::loadAll(const QLocale &locale)
 
             delete translator;
         }
+        if (!module_loaded)
+            qCWarning(lcTranslationLoader) << "Failed to load translation for" << module.libraryName << ":" << module.moduleName;
     }
 }
 
