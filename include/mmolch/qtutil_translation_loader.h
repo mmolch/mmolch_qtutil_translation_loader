@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QLocale>
 #include <QLoggingCategory>
+#include <QStringList>
 #include <QTranslator>
 #include <QVector>
 #include <QString>
@@ -24,14 +25,14 @@ public:
     explicit TranslationLoader(QCoreApplication *app);
 
     TranslationLoader &addModules(const QVector<Module> &modules);
-    TranslationLoader &addSearchDirs(const QVector<QString> &dirs);
+    TranslationLoader &addPaths(const QStringList &paths);
 
     void loadAll(const QLocale &locale);
 
-    QStringList genSearchDirs(const TranslationLoader::Module &module) const;
-
 private:
-    QVector<QString> m_searchDirs;
+    QStringList genPaths(const TranslationLoader::Module &module, const QLocale &locale) const;
+
+    QStringList m_paths;
     QVector<Module> m_modules;
     QVector<QTranslator*> m_translators;
 };

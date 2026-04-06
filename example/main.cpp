@@ -14,8 +14,6 @@ int main(int argc, char *argv[])
     loader->addModules({
                 {"qt6", "qt"},
                 {"qt6", "qtbase"},
-                {"qt6", "qtdeclarative"},
-                {"qt6keychain", "qtkeychain"},
                 {"no-lib", "built-to-fail"}
             })
             .loadAll(QLocale("de_DE"));
